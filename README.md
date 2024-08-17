@@ -7,7 +7,7 @@ Command used for this project.
 ### 1. Create a new angular app
 
 ```sh
-ng new week4tut
+ng new angular-lab
 ```
 
 ### 2. Add bootstrap to my application (Simple way)
