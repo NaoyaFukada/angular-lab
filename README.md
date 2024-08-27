@@ -287,3 +287,69 @@ export class ProfileComponent implements OnInit {
   </div>
 </div>
 ```
+
+### 12. Update app.component.html
+
+```html
+<main class="main">
+  <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" routerLink="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/login">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/account">Account</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/profile">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" (click)="logout()" style="cursor: pointer">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <router-outlet />
+  </div>
+</main>
+```
+
+### 13. Update app.component.ts
+
+```typescript
+import { Component } from "@angular/core";
+import { RouterOutlet, RouterLink } from "@angular/router";
+import { LoginComponent } from "./login/login.component";
+import { AccountComponent } from "./account/account.component";
+import { Router } from "@angular/router";
+
+@Component({
+  selector: "app-root",
+  standalone: true,
+  imports: [RouterOutlet, RouterLink, LoginComponent, AccountComponent],
+  templateUrl: "./app.component.html",
+  styleUrl: "./app.component.css",
+})
+export class AppComponent {
+  constructor(private router: Router) {}
+
+  logout() {
+    // Clear session storage
+    sessionStorage.clear();
+
+    // Redirect to the login page
+    this.router.navigate(["/login"]);
+  }
+}
+```
