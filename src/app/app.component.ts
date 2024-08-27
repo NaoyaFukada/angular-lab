@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { AccountComponent } from './account/account.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -12,4 +13,14 @@ import { AccountComponent } from './account/account.component';
 })
 export class AppComponent {
   title = 'week4tut';
+
+  constructor(private router: Router) {}
+
+  logout() {
+    // Clear session storage
+    sessionStorage.clear();
+
+    // Redirect to the login page
+    this.router.navigate(['/login']);
+  }
 }

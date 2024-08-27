@@ -2,6 +2,12 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { Router } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+};
+const BACKEND_URL = 'http://localhost:3000';
 
 @Component({
   selector: 'app-login',
@@ -14,24 +20,22 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
   errorMessage: string = '';
-  users = [
-    { email: 'naoya@icloud.com', upwd: 'Naoya' },
-    { email: 'jam@icloud.com', upwd: 'Jam' },
-    { email: 'nakajima@icloud.com', upwd: 'Nakajima' },
-  ];
-  constructor(private router: Router) {}
+  constructor(private router: Router, private httpClient: HttpClient) {}
   onSubmit() {
-    const user = this.users.find(
-      (user) => user.email === this.email && user.upwd === this.password
-    );
-    if (user) {
-      this.errorMessage = '';
-      console.log('Login successful');
-      // this.router.navigateByUrl('/account');
-      this.router.navigate(['/account']);
-    } else {
-      this.errorMessage = 'Invalid email or password';
-      console.log('Invalid email or password');
-    }
+    let user = { email: this.email, password: this.password };
+    this.httpClient
+      .post(BACKEND_URL + '/api/auth', user, httpOptions)
+      .subscribe((data: any) => {
+        console.log(JSON.stringify(user));
+        console.log(JSON.stringify(data));
+        if (data.valid) {
+          sessionStorage.setItem('current_user', data.userInfo);
+          console.log(data.userInfo);
+          this.router.navigate(['/account']);
+        } else {
+          this.errorMessage = data.errorMessage;
+          console.log(this.errorMessage);
+        }
+      });
   }
 }
